@@ -28,10 +28,10 @@ class EmployeesController extends Controller
             $table->addColumn('actions', '&nbsp;');
 
             $table->editColumn('actions', function ($row) {
-                $viewGate      = 'employee_show';
-                $editGate      = 'employee_edit';
-                $deleteGate    = 'employee_delete';
-                $crudRoutePart = 'employees';
+                $viewGate      = 'book_history_show';
+                $editGate      = 'book_history_edit';
+                $deleteGate    = 'book_history_delete';
+                $crudRoutePart = 'book_history';
 
                 return view('partials.datatablesActions', compact(
                     'viewGate',
@@ -48,39 +48,22 @@ class EmployeesController extends Controller
             $table->editColumn('name', function ($row) {
                 return $row->name ? $row->name : "";
             });
-            $table->editColumn('email', function ($row) {
-                return $row->email ? $row->email : "";
+            $table->editColumn('check_in', function ($row) {
+                return $row->check_in ? $row->check_in : "";
             });
-            $table->editColumn('phone', function ($row) {
-                return $row->phone ? $row->phone : "";
+            $table->editColumn('check_out', function ($row) {
+                return $row->check_out ? $row->check_out : "";
             });
-            $table->editColumn('photo', function ($row) {
-                if ($photo = $row->photo) {
-                    return sprintf(
-                        '<a href="%s" target="_blank"><img src="%s" width="50px" height="50px"></a>',
-                        $photo->url,
-                        $photo->thumbnail
-                    );
-                }
-
-                return '';
-            });
-            $table->editColumn('services', function ($row) {
-                $labels = [];
-
-                foreach ($row->services as $service) {
-                    $labels[] = sprintf('<span class="label label-info label-many">%s</span>', $service->name);
-                }
-
-                return implode(' ', $labels);
+            $table->editColumn('log_time', function ($row) {
+                return $row->log_time ? $row->log_time : "";
             });
 
-            $table->rawColumns(['actions', 'placeholder', 'photo', 'services']);
+            $table->rawColumns(['id', 'name', 'check_in', 'check_out', 'log_time']);
 
             return $table->make(true);
         }
 
-        return view('admin.employees.index');
+        return view('admin.checkins.index');
     }
 
     public function create()
@@ -89,7 +72,7 @@ class EmployeesController extends Controller
 
         $services = Service::all()->pluck('name', 'id');
 
-        return view('admin.employees.create', compact('services'));
+        return view('admin.checkins.create', compact('services'));
     }
 
     public function store(StoreEmployeeRequest $request)
@@ -101,7 +84,7 @@ class EmployeesController extends Controller
             $employee->addMedia(storage_path('tmp/uploads/' . $request->input('photo')))->toMediaCollection('photo');
         }
 
-        return redirect()->route('admin.employees.index');
+        return redirect()->route('admin.checkins.index');
     }
 
     public function edit(Employee $employee)
@@ -128,7 +111,7 @@ class EmployeesController extends Controller
             $employee->photo->delete();
         }
 
-        return redirect()->route('admin.employees.index');
+        return redirect()->route('admin.checkins.index');
     }
 
     public function show(Employee $employee)

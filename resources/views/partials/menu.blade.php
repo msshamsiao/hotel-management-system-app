@@ -10,7 +10,7 @@
                     {{ trans('global.dashboard') }}
                 </a>
             </li>
-            @can('service_access')
+            @can('room_access')
                 <li class="nav-item">
                     <a href="{{ route("admin.rooms.index") }}" class="nav-link {{ request()->is('admin/rooms') || request()->is('admin/rooms/*') ? 'active' : '' }}">
                         <i class="nav-icon fa fa-bed">
@@ -20,27 +20,27 @@
                     </a>
                 </li>
             @endcan
-            {{-- @can('employee_access')
+            @can('checkin_access')
                 <li class="nav-item">
-                    <a href="{{ route("admin.employees.index") }}" class="nav-link {{ request()->is('admin/employees') || request()->is('admin/employees/*') ? 'active' : '' }}">
+                    <a href="{{ route("admin.checkins.index") }}" class="nav-link {{ request()->is('admin/employees') || request()->is('admin/employees/*') ? 'active' : '' }}">
                         <i class="fa-fw fas fa-cogs nav-icon">
 
                         </i>
-                        {{ trans('cruds.employee.title') }}
+                        Check-In
                     </a>
                 </li>
             @endcan
-            @can('client_access')
+            @can('book_history_access')
                 <li class="nav-item">
-                    <a href="{{ route("admin.clients.index") }}" class="nav-link {{ request()->is('admin/clients') || request()->is('admin/clients/*') ? 'active' : '' }}">
+                    <a href="{{ route("admin.book_history.index") }}" class="nav-link {{ request()->is('admin/clients') || request()->is('admin/clients/*') ? 'active' : '' }}">
                         <i class="fa-fw fas fa-cogs nav-icon">
 
                         </i>
-                        {{ trans('cruds.client.title') }}
+                        Book History
                     </a>
                 </li>
             @endcan
-            @can('appointment_access')
+           {{--  @can('appointment_access')
                 <li class="nav-item">
                     <a href="{{ route("admin.appointments.index") }}" class="nav-link {{ request()->is('admin/appointments') || request()->is('admin/appointments/*') ? 'active' : '' }}">
                         <i class="fa-fw fas fa-cogs nav-icon">

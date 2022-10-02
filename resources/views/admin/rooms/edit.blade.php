@@ -3,16 +3,20 @@
 
 <div class="card">
     <div class="card-header">
-        {{ trans('global.edit') }} {{ trans('cruds.service.title_singular') }}
+        Manage Room Edit
     </div>
 
     <div class="card-body">
-        <form action="{{ route("admin.services.update", [$service->id]) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.rooms.update', $room->name) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
-                <label for="name">{{ trans('cruds.service.fields.name') }}*</label>
-                <input type="text" id="name" name="name" class="form-control" value="{{ old('name', isset($service) ? $service->name : '') }}" required>
+                <label for="name">Room: <span class="badge" style="color:red">*</span></label>
+                <input type="file" name="file_photo" id="file_photo" class="form-control" value="{{ $room->room_photo }}">
+            </div>
+            <div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
+                <label for="name">Room Name: <span class="badge" style="color:red">*</span></label>
+                <input type="text" id="name" name="name" class="form-control" value="{{ $room->name }}" required>
                 @if($errors->has('name'))
                     <em class="invalid-feedback">
                         {{ $errors->first('name') }}
@@ -23,9 +27,21 @@
                 </p>
             </div>
             <div class="form-group {{ $errors->has('price') ? 'has-error' : '' }}">
-                <label for="price">{{ trans('cruds.service.fields.price') }}</label>
-                <input type="number" id="price" name="price" class="form-control" value="{{ old('price', isset($service) ? $service->price : '') }}" step="0.01">
-                @if($errors->has('price'))
+                <label for="price">Price Per Day: <span class="badge" style="color:red">*</span></label>
+                <input type="number" id="price_per_day" name="price_per_day" class="form-control" value="{{ $room->price }}" step="0.01">
+                @if($errors->has('price_per_day'))
+                    <em class="invalid-feedback">
+                        {{ $errors->first('price') }}
+                    </em>
+                @endif
+                <p class="helper-block">
+                    {{ trans('cruds.service.fields.price_helper') }}
+                </p>
+            </div>
+            <div class="form-group {{ $errors->has('price') ? 'has-error' : '' }}">
+                <label for="price">Capacity: <span class="badge" style="color:red">*</span></label>
+                <input type="number" id="capacity" name="capacity" class="form-control" value="{{ $room->capacity }}" step="0.01">
+                @if($errors->has('capacity'))
                     <em class="invalid-feedback">
                         {{ $errors->first('price') }}
                     </em>

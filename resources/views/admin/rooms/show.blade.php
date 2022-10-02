@@ -3,52 +3,54 @@
 
 <div class="card">
     <div class="card-header">
-        {{ trans('global.show') }} {{ trans('cruds.service.title') }}
+       Available Room
     </div>
 
     <div class="card-body">
-        <div class="mb-2">
-            <table class="table table-bordered table-striped">
-                <tbody>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.service.fields.id') }}
-                        </th>
-                        <td>
-                            {{ $service->id }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.service.fields.name') }}
-                        </th>
-                        <td>
-                            {{ $service->name }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.service.fields.price') }}
-                        </th>
-                        <td>
-                            ${{ $service->price }}
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <a style="margin-top:20px;" class="btn btn-default" href="{{ url()->previous() }}">
-                {{ trans('global.back_to_list') }}
-            </a>
-        </div>
-
-        <nav class="mb-3">
-            <div class="nav nav-tabs">
-
-            </div>
-        </nav>
-        <div class="tab-content">
-
-        </div>
+        <table class="table table-hover ajaxTable datatable datatable-Service">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Room</th>
+                    <th>Room Name</th>
+                    <th> Price Per Day</th>
+                    <th>Capacity</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+        </table>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+@parent
+<script>
+    $(function () {
+        let dtOverrideGlobals = {
+            buttons: dtButtons,
+            processing: true,
+            serverSide: true,
+            retrieve: true,
+            aaSorting: [],
+            ajax: "{{ route('admin.rooms.index') }}",
+            columns: [
+                { data: 'id', name: 'id' },
+                { data: 'room_photo', name: 'room_photo'},
+                { data: 'room_name', name: 'room_name' },
+                { data: 'price', name: 'price' },
+                { data: 'capacity', name: 'capacity' },
+                { data: 'actions', name: '{{ trans('global.actions') }}' }
+            ],
+            order: [[ 1, 'desc' ]],
+            pageLength: 100,
+        };
+
+        $('.datatable-Service').DataTable(dtOverrideGlobals);
+            $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){
+                $($.fn.dataTable.tables(true)).DataTable()
+                    .columns.adjust();
+            });
+        });
+</script>
 @endsection

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 <div class="row justify-content-center">
-    <div class="col-md-8">
+    <div class="col-md-4">
         <div class="card-group">
             <div class="card p-4">
                 <div class="card-body">
@@ -12,9 +12,8 @@
                     @endif
                     <form method="POST" action="{{ route('login') }}">
                         {{ csrf_field() }}
-                        <h1>{{ trans('panel.site_title') }}</h1>
-                        <p class="text-muted">{{ trans('global.login') }}</p>
-
+                        <h1>Admin Login</h1>
+                        
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text">

@@ -24,10 +24,10 @@ class ClientsController extends Controller
             $table->addColumn('actions', '&nbsp;');
 
             $table->editColumn('actions', function ($row) {
-                $viewGate      = 'client_show';
-                $editGate      = 'client_edit';
-                $deleteGate    = 'client_delete';
-                $crudRoutePart = 'clients';
+                $viewGate      = 'checkin_show';
+                $editGate      = 'checkin_edit';
+                $deleteGate    = 'checkin_delete';
+                $crudRoutePart = 'checkins';
 
                 return view('partials.datatablesActions', compact(
                     'viewGate',
@@ -44,11 +44,20 @@ class ClientsController extends Controller
             $table->editColumn('name', function ($row) {
                 return $row->name ? $row->name : "";
             });
-            $table->editColumn('phone', function ($row) {
-                return $row->phone ? $row->phone : "";
+            $table->editColumn('room_name', function ($row) {
+                return $row->room_name ? $row->room_name : "";
             });
-            $table->editColumn('email', function ($row) {
-                return $row->email ? $row->email : "";
+            $table->editColumn('date_reserved', function ($row) {
+                return $row->date_reserved ? $row->date_reserved : "";
+            });
+            $table->editColumn('days', function ($row) {
+                return $row->days ? $row->days : "";
+            });
+            $table->editColumn('contact_no', function ($row) {
+                return $row->contact_no ? $row->contact_no : "";
+            });
+            $table->editColumn('total_amount', function ($row) {
+                return $row->total_amount ? $row->total_amount : "";
             });
 
             $table->rawColumns(['actions', 'placeholder']);
@@ -56,7 +65,7 @@ class ClientsController extends Controller
             return $table->make(true);
         }
 
-        return view('admin.clients.index');
+        return view('admin.book_history.index');
     }
 
     public function create()
@@ -70,7 +79,7 @@ class ClientsController extends Controller
     {
         $client = Client::create($request->all());
 
-        return redirect()->route('admin.clients.index');
+        return redirect()->route('admin.book_history.index');
     }
 
     public function edit(Client $client)
@@ -84,7 +93,7 @@ class ClientsController extends Controller
     {
         $client->update($request->all());
 
-        return redirect()->route('admin.clients.index');
+        return redirect()->route('admin.book_history.index');
     }
 
     public function show(Client $client)
