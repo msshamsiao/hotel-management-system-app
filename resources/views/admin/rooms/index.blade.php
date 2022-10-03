@@ -28,6 +28,7 @@
                     <th>Actions</th>
                 </tr>
             </thead>
+            <tbody></tbody>
         </table>
     </div>
 </div>
@@ -91,10 +92,9 @@
         };
 
         $('.datatable-Service').DataTable(dtOverrideGlobals);
-            $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){
-                $($.fn.dataTable.tables(true)).DataTable()
-                    .columns.adjust();
-            });
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){
+            $($.fn.dataTable.tables(true)).DataTable().columns.adjust();
         });
+    });
 </script>
 @endsection

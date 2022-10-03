@@ -182,12 +182,18 @@
                                 <i class="fa fa-bed fa-4x"></i>
                             </div>
                             <div class="col-xs-9 text-right">
-                          <div class='huge'> <!-- add count --> </div>
+                                <div class='huge'>  
+                                    @php
+                                        $available = App\Service::where('room_status', 'Available')->count();
+                                    @endphp
+
+                                    {{ $available }}
+                                </div>
                                 <div class="under-number">Available Rooms</div>
                             </div>
                         </div>
                     </div>
-                    <a href="posts.php">
+                    <a href="{{ url("admin/rooms/available") }}">
                         <div class="panel-footer">
                             <span class="pull-left blue">View Details</span>
                             <span class="pull-right blue"><i class="fa fa-arrow-circle-right"></i></span>

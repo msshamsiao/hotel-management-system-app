@@ -70,6 +70,49 @@ class ServicesController extends Controller
         return view('admin.rooms.index');
     }
 
+    public function available_rooms(Request $request)
+    {
+        if ($request->ajax()) {
+
+            $collection = Service::where('room_status', 'Available')->get();
+
+            $datatable = DataTables::of($collection)
+            ->addIndexColumn()
+        
+            ->addColumn('id', function ($row) {
+                return $row->id ? $row->id : "";
+            })
+            ->addColumn('room_photo', function ($row) {
+                return '<img src="../public/Image/'.$row->room_photo.'" style="width: 100px; height: 100px; object-fit: cover;">';
+            })
+            ->addColumn('room_name', function ($row) {
+                return $row->name ? $row->name : "";
+            })
+            ->addColumn('price', function ($row) {
+                return $row->price ? $row->price : "";
+            })
+            ->addColumn('capacity', function ($row) {
+                return $row->capacity ? $row->capacity : "";
+            })
+            ->addColumn('room_status', function ($row) {
+                $status = '';
+
+                if($row->room_status == 'Available'){
+                    $status = '<span class="badge badge-success">' . $row->room_status . '</span>';
+                }else{
+                    $status = '<span class="badge badge-danger">' . $row->room_status . '</span>';   
+                }
+
+                return $status;
+            });
+
+            return $datatable->rawColumns(['room_photo', 'room_name', 'price', 'capacity', 'room_status'])
+            ->make(true);
+        }
+
+        return view('admin.rooms.show');
+    }
+
     public function create()
     {
         abort_if(Gate::denies('room_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
@@ -126,8 +169,8 @@ class ServicesController extends Controller
     {
         abort_if(Gate::denies('room_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        Service::find($id)->delete();
+        Service::findOrFail($id)->delete();
 
-        return redirect()->route('admin.rooms.index')->with('success','Room deleted successfully');
+        return redirect()->route('admin.rooms.index');
     }
 }
