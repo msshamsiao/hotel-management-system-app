@@ -33,9 +33,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
 
     // Rooms
     Route::resource('rooms', 'ServicesController');
-    Route::group(['prefix' => 'rooms'], function(){
-        Route::get('available', 'ServicesController@available_rooms')->name('rooms.available');
-    });
 
     // Checkins
     Route::delete('checkins/destroy', 'EmployeesController@massDestroy')->name('employees.massDestroy');

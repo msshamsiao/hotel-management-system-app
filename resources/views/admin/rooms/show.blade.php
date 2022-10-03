@@ -7,7 +7,7 @@
     </div>
 
     <div class="card-body">
-        <table class="table table-hover ajaxTable datatable datatable-rooms">
+        <table class="table table-hover datatable datatable-rooms">
             <thead>
                 <tr>
                     <th>#</th>
@@ -18,39 +18,22 @@
                     <th>Status</th>
                 </tr>
             </thead>
-            <tbody></tbody>
+            <tbody>
+                @foreach ($availables = App\Service::where('room_status', 'Available')->get() as $available)
+                    <td></td>
+                    <td><img src="/../public/Image/{{ $available->room_photo }}" style="width: 100px; height: 100px; object-fit: cover;"></td>
+                    <td>{{ $available->name }}</td>
+                    <td>{{ $available->price }}</td>
+                    <td>{{ $available->capacity }}</td>
+                    
+                    @if($available->room_status == 'Available')
+                        <td><span class="badge badge-success">'{{ $available->room_status }}</span></td>
+                    @else
+                        <td><span class="badge badge-danger">'{{ $available->room_status }}</span></td>
+                    @endif
+                @endforeach
+            </tbody>
         </table>
     </div>
 </div>
-@endsection
-
-@section('scripts')
-@parent
-<script>
-    $(function () {
-        
-        let dtOverrideGlobals = {
-            processing: true,
-            serverSide: true,
-            retrieve: true,
-            aaSorting: [],
-            ajax: "{{ route('admin.rooms.available') }}",
-            columns: [
-                { data: 'id', name: 'id' },
-                { data: 'room_photo', name: 'room_photo'},
-                { data: 'room_name', name: 'room_name' },
-                { data: 'price', name: 'price' },
-                { data: 'capacity', name: 'capacity' },
-                { data: 'room_status', name: 'room_status' },
-            ],
-            order: [[ 1, 'desc' ]],
-            pageLength: 100,
-        };
-
-        $('.datatable-rooms').DataTable(dtOverrideGlobals);
-        $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){
-            $($.fn.dataTable.tables(true)).DataTable().columns.adjust();
-        });
-    });
-</script>
 @endsection
