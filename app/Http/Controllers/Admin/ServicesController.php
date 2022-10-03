@@ -83,8 +83,8 @@ class ServicesController extends Controller
         if($request->file('file_photo')){
             $file = $request->file('file_photo');
             $filename = date('YmdHi').$file->getClientOriginalName();
-            Storage::disk('public')->put('image/', $file);
-            #$file->move(public_path('public/Image'), $filename);
+            #Storage::disk('public')->put('image/', $file);
+            $file->move(public_path('public/Image'), $filename);
             $room['room_photo'] = $filename;
         }
 
