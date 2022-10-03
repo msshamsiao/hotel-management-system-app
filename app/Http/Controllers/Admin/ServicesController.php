@@ -23,13 +23,11 @@ class ServicesController extends Controller
             $datatable = DataTables::of($collection)
             ->addIndexColumn()
             ->editColumn('actions', function ($row) {
-                $viewGate      = 'room_show';
                 $editGate      = 'room_edit';
                 $deleteGate    = 'room_delete';
                 $crudRoutePart = 'rooms';
 
                 return view('partials.datatablesActions', compact(
-                    'viewGate',
                     'editGate',
                     'deleteGate',
                     'crudRoutePart',
