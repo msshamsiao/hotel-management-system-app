@@ -21,18 +21,10 @@ class Service extends Model
     protected $fillable = [
         'name',
         'price',
+        'capacity',
+        'room_status',
         'created_at',
         'updated_at',
         'deleted_at',
     ];
-
-    public function employees()
-    {
-        return $this->belongsToMany(Employee::class);
-    }
-
-    public function appointments()
-    {
-        return $this->belongsToMany(Appointment::class);
-    }
 }

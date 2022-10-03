@@ -13,11 +13,7 @@ class Employee extends Model implements HasMedia
 {
     use SoftDeletes, InteractsWithMedia, HasFactory;
 
-    public $table = 'employees';
-
-    protected $appends = [
-        'photo',
-    ];
+    public $table = 'check_in';
 
     protected $dates = [
         'created_at',
@@ -27,37 +23,12 @@ class Employee extends Model implements HasMedia
 
     protected $fillable = [
         'name',
-        'email',
-        'phone',
+        'room_name',
+        'days',
+        'contact_no',
+        'total_amount',
         'created_at',
         'updated_at',
         'deleted_at',
     ];
-
-    public function registerMediaConversions(Media $media = null): void
-    {
-        $this->addMediaConversion('thumb')->width(50)->height(50);
-    }
-
-    public function appointments()
-    {
-        return $this->hasMany(Appointment::class, 'employee_id', 'id');
-    }
-
-    public function getPhotoAttribute()
-    {
-        $file = $this->getMedia('photo')->last();
-
-        if ($file) {
-            $file->url       = $file->getUrl();
-            $file->thumbnail = $file->getUrl('thumb');
-        }
-
-        return $file;
-    }
-
-    public function services()
-    {
-        return $this->belongsToMany(Service::class);
-    }
 }

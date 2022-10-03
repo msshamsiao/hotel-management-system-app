@@ -10,7 +10,7 @@ class Client extends Model
 {
     use SoftDeletes, HasFactory;
 
-    public $table = 'clients';
+    public $table = 'book_history';
 
     protected $dates = [
         'created_at',
@@ -20,15 +20,11 @@ class Client extends Model
 
     protected $fillable = [
         'name',
-        'phone',
-        'email',
+        'check_in',
+        'check_out',
+        'log_time',
         'created_at',
         'updated_at',
         'deleted_at',
     ];
-
-    public function appointments()
-    {
-        return $this->hasMany(Appointment::class, 'client_id', 'id');
-    }
 }

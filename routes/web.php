@@ -34,21 +34,16 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     // Rooms
     Route::resource('rooms', 'ServicesController');
     Route::group(['prefix' => 'rooms'], function(){
-        Route::delete('destroy', 'ServicesController@massDestroy')->name('rooms.massDestroy');
+        Route::delete('destroy', 'ServicesController@destroy')->name('rooms.destroy');
     });
 
-    // Employees
+    // Checkins
     Route::delete('checkins/destroy', 'EmployeesController@massDestroy')->name('employees.massDestroy');
     Route::post('checkins/media', 'EmployeesController@storeMedia')->name('employees.storeMedia');
     Route::resource('checkins', 'EmployeesController');
 
-    // Clients
+    // Book History
     Route::delete('book_history/destroy', 'ClientsController@massDestroy')->name('clients.massDestroy');
     Route::resource('book_history', 'ClientsController');
 
-    // Appointments
-    Route::delete('appointments/destroy', 'AppointmentsController@massDestroy')->name('appointments.massDestroy');
-    Route::resource('appointments', 'AppointmentsController');
-
-    Route::get('system-calendar', 'SystemCalendarController@index')->name('systemCalendar');
 });

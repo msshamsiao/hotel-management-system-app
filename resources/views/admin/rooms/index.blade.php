@@ -22,8 +22,9 @@
                     <th>#</th>
                     <th>Room</th>
                     <th>Room Name</th>
-                    <th> Price Per Day</th>
+                    <th>Price Per Day</th>
                     <th>Capacity</th>
+                    <th>Status</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -82,6 +83,7 @@
                 { data: 'room_name', name: 'room_name' },
                 { data: 'price', name: 'price' },
                 { data: 'capacity', name: 'capacity' },
+                { data: 'room_status', name: 'room_status' },
                 { data: 'actions', name: '{{ trans('global.actions') }}' }
             ],
             order: [[ 1, 'desc' ]],

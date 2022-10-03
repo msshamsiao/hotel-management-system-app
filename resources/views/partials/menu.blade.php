@@ -20,7 +20,7 @@
                     </a>
                 </li>
             @endcan
-            @can('checkin_access')
+            @can('check_in_access')
                 <li class="nav-item">
                     <a href="{{ route("admin.checkins.index") }}" class="nav-link {{ request()->is('admin/employees') || request()->is('admin/employees/*') ? 'active' : '' }}">
                         <i class="fa-fw fas fa-cogs nav-icon">

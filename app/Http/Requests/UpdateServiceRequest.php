@@ -11,7 +11,7 @@ class UpdateServiceRequest extends FormRequest
 {
     public function authorize()
     {
-        abort_if(Gate::denies('service_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('room_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return true;
     }

@@ -17,13 +17,12 @@ class ServicesController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $query = Service::query()->select(sprintf('%s.*', (new Service)->table));
-            $table = Datatables::of($query);
 
-            $table->addColumn('placeholder', '&nbsp;');
-            $table->addColumn('actions', '&nbsp;');
+            $collection = Service::get();
 
-            $table->editColumn('actions', function ($row) {
+            $datatable = DataTables::of($collection)
+            ->addIndexColumn()
+            ->editColumn('actions', function ($row) {
                 $viewGate      = 'room_show';
                 $editGate      = 'room_edit';
                 $deleteGate    = 'room_delete';
@@ -36,29 +35,36 @@ class ServicesController extends Controller
                     'crudRoutePart',
                     'row'
                 ));
-            });
-
-            $table->editColumn('id', function ($row) {
+            })
+            ->addColumn('id', function ($row) {
                 return $row->id ? $row->id : "";
-            });
-            $table->editColumn('room_photo', function ($row) {
-                $image = '<img src="public/Image/'.$row->room_photo.'" style="width: 100%; height: 40vh; object-fit: cover;">';
-
-                return $image ? $image : "";
-            });
-            $table->editColumn('room_name', function ($row) {
+            })
+            ->addColumn('room_photo', function ($row) {
+                return '<img src="../public/Image/'.$row->room_photo.'" style="width: 100px; height: 100px; object-fit: cover;">';
+            })
+            ->addColumn('room_name', function ($row) {
                 return $row->name ? $row->name : "";
-            });
-            $table->editColumn('price', function ($row) {
+            })
+            ->addColumn('price', function ($row) {
                 return $row->price ? $row->price : "";
-            });
-            $table->editColumn('capacity', function ($row) {
+            })
+            ->addColumn('capacity', function ($row) {
                 return $row->capacity ? $row->capacity : "";
+            })
+            ->addColumn('room_status', function ($row) {
+                $status = '';
+
+                if($row->room_status == 'Available'){
+                    $status = '<span class="badge badge-success">' . $row->room_status . '</span>';
+                }else{
+                    $status = '<span class="badge badge-danger">' . $row->room_status . '</span>';   
+                }
+
+                return $status;
             });
 
-            $table->rawColumns(['actions', 'placeholder']);
-
-            return $table->make(true);
+            return $datatable->rawColumns(['room_photo', 'room_name', 'price', 'capacity', 'room_status'])
+            ->make(true);
         }
 
         return view('admin.rooms.index');
@@ -89,16 +95,21 @@ class ServicesController extends Controller
         return redirect()->route('admin.rooms.index');
     }
 
-    public function edit(Service $room)
+    public function edit($id)
     {
         abort_if(Gate::denies('room_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
+        $room = Service::find($id);
         return view('admin.rooms.edit', compact('room'));
     }
 
-    public function update(UpdateServiceRequest $request, Service $room)
+    public function update(UpdateServiceRequest $request, $id)
     {
-        $room->update($request->all());
+        $room = Service::find($id);
+        $room->name = $request->name;
+        $room->capacity = $request->capacity;
+        $room->price = $request->price_per_day;
+        $room->update();
 
         return redirect()->route('admin.rooms.index');
     }
@@ -110,19 +121,12 @@ class ServicesController extends Controller
         return view('admin.rooms.show', compact('service'));
     }
 
-    public function destroy(Service $service)
+    public function destroy($id)
     {
         abort_if(Gate::denies('room_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $service->delete();
+        Service::find($id)->delete();
 
-        return back();
-    }
-
-    public function massDestroy(MassDestroyServiceRequest $request)
-    {
-        Service::whereIn('id', request('ids'))->delete();
-
-        return response(null, Response::HTTP_NO_CONTENT);
+        return redirect()->route('admin.rooms.index')->with('success','Room deleted successfully');
     }
 }
